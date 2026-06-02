@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <title>Nuestros Servicios - Studio Hogar</title>
+    <style>
+        /* Estilos Generales - Ajustados al estilo Editorial Claro de la página real */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* ==========================================
+           NAVBAR LINKS (EFECTO HOVER)
+        ========================================== */
+        .navbar ul li a {
+            color: #1a1d24; /* Color base */
+            text-decoration: none;
+            transition: color 0.3s ease; /* Aquí se crea la transición suave */
+        }
+
+        .navbar ul li a:hover {
+            color: #FF3C2A; /* El color que tomará al pasar el mouse (puedes cambiarlo) */
+        }
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #2d3142; 
+            background-color: #f7f6f0; 
+        }
+        .container-custom {
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Botón .btn-4 integrado perfectamente en fondo claro */
+        .btn-4 {
+            display: inline-block;
+            text-align: center;
+            padding: 12px 28px;
+            background: linear-gradient(135deg, #FF3C2A 0%, #e02d1b 100%);
+            color: #ffffff !important;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(255, 60, 42, 0.2);
+            border: none;
+            cursor: pointer;
+        }
+        .btn-4:hover {
+            background: linear-gradient(135deg, #e02d1b 0%, #b82012 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 60, 42, 0.35);
+        }
+
+        /* ==========================================
+           SISTEMA DE ANIMACIÓN EFECTO "APARECER"
+        ========================================== */
+        .reveal {
+            opacity: 0;
+            transform: scale(0.95) translateY(20px);
+            transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+            will-change: transform, opacity;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+        
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+
+        /* ==========================================
+           SECCIÓN DE VALORES (Mejorado el contraste)
+        ========================================== */
+        .features-section {
+            margin-top: -60px; 
+            position: relative;
+            z-index: 10;
+            margin-bottom: 60px; 
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px; 
+        }
+        body .features-section .feature-card {
+            background-color: #ffffff !important; 
+            color: #2d3142 !important;
+            padding: 45px 30px; 
+            text-align: center;
+            border-radius: 8px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08) !important; 
+            border: 1px solid rgba(0, 0, 0, 0.06) !important;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12) !important;
+        }
+        body .features-section .feature-card i {
+            font-size: 38px !important;
+            color: #FF3C2A !important; 
+            display: inline-block;
+            margin-bottom: 15px;
+            opacity: 1 !important;
+        }
+        body .features-section .feature-card h3 {
+            font-size: 16px !important;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 12px;
+            font-weight: 700 !important;
+            color: #1a1d24 !important;
+        }
+        body .features-section .feature-card p {
+            font-size: 14px !important;
+            line-height: 1.6;
+            color: #5c6273 !important;
+            margin: 0;
+        }
+
+        /* ==========================================
+           SECCIÓN SERVICIOS
+        ========================================== */
+        .services-section {
+            padding: 60px 0 100px 0; 
+            text-align: center;
+            background-color: #f7f6f0; 
+        }
+        .services-section h2 {
+            font-size: 36px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #1a1d24;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        .services-section > p {
+            color: #5c6273;
+            font-size: 16px;
+            max-width: 600px;
+            margin: 0 auto 60px auto; 
+            line-height: 1.6;
+        }
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px; 
+            text-align: left;
+        }
+        .service-box {
+            background: #ffffff; 
+            padding: 40px 30px; 
+            border-radius: 8px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .service-box:hover {
+            border-color: rgba(255, 60, 42, 0.3);
+            box-shadow: 0 12px 30px rgba(255, 60, 42, 0.06);
+            transform: translateY(-4px);
+        }
+        .service-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .service-icon {
+            width: 50px;
+            height: 50px;
+            background-color: #fff1f0; 
+            color: #FF3C2A;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+        .service-box h3 {
+            font-size: 18px;
+            color: #1a1d24;
+            margin: 0;
+            font-weight: 600;
+        }
+        .service-box p {
+            font-size: 14.5px;
+            color: #5c6273;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+        .service-box .btn-4 {
+            align-self: flex-start;
+            margin-top: auto;
+            padding: 9px 20px;
+            font-size: 12px;
+        }
+
+        /* ==========================================
+           SECCIÓN CONTACTO / REDES SOCIALES
+        ========================================== */
+        body .contact-block {
+            background-color: #ffffff !important; 
+            color: #2d3142 !important;
+            padding: 80px 0; 
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        .contact-content {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        body .contact-block .contact-content h2 {
+            font-size: 36px !important;
+            margin-bottom: 15px;
+            font-weight: 700 !important;
+            color: #1a1d24 !important;
+        }
+        body .contact-block .contact-content p {
+            color: #5c6273 !important;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 35px;
+        }
+        .social-grid {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .social-card {
+            background-color: #f7f6f0;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 8px;
+            padding: 15px 25px;
+            min-width: 150px;
+            color: #2d3142;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+        .social-card i {
+            font-size: 28px;
+            color: #FF3C2A;
+            transition: transform 0.3s ease;
+        }
+        .social-card span {
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .social-card:hover {
+            transform: translateY(-4px);
+            background-color: #ffffff;
+            border-color: #FF3C2A;
+            box-shadow: 0 5px 15px rgba(255, 60, 42, 0.1);
+        }
+        .social-card:hover i {
+            transform: scale(1.1);
+        }
+
+        /* ==========================================
+           FOOTER
+        ========================================== */
+        .main-footer {
+    background-color: #1a1d24; 
+    color: #94a3b8;
+    padding: 70px 0 30px 0;
+    width: 100%;
+    margin-top: 50px; /* <--- Esto empujará el footer hacia abajo separándolo de cualquier sección previa */
+}
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            border-bottom: 1px solid #2e3542;
+            padding-bottom: 40px;
+        }
+        .footer-col h3 {
+            color: #ffffff;
+            font-size: 16px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .footer-col p { 
+            font-size: 14px; 
+            line-height: 1.6; 
+        }
+        .footer-links { 
+            list-style: none; 
+            padding: 0; 
+            margin: 0; 
+        }
+        .footer-links li { 
+            margin-bottom: 12px; 
+        }
+        .footer-links a { 
+            color: #94a3b8; 
+            text-decoration: none; 
+            font-size: 14px; 
+            transition: color 0.2s; 
+        }
+        .footer-links a:hover { 
+            color: #FF3C2A; 
+        }
+        
+        .payment-methods { 
+            display: flex; 
+            gap: 10px; 
+            flex-wrap: wrap; 
+            margin-top: 15px; 
+        }
+        .payment-badge {
+            background-color: #242933;
+            color: #ffffff;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #2e3542;
+        }
+
+        .footer-bottom {
+            padding-top: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        /* Métodos de Pago */
+        .payment-methods { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 15px; }
+        .payment-badge {
+            background-color: #27272a;
+            color: #ffffff;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #3f3f46;
+            transition: all 0.2s ease;
+        }
+        .payment-badge:hover {
+            background-color: #3f3f46;
+            border-color: #52525b;
+            transform: translateY(-2px);
+        }
+        .payment-badge i.bi-credit-card-2-front:hover { color: #0070ba; }
+        .payment-badge i.bi-paypal:hover { color: #003087; }
+        .payment-badge i.bi-apple:hover { color: #ffffff; }
+
+
+        /* ==========================================
+           BOTONES DEL CARRITO DE COMPRAS
+        ========================================== */
+        .btn-cart-vaciar {
+            flex: 1;
+            text-align: center;
+            background: #f4f4f5;
+            color: #52525b;
+            padding: 10px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+        .btn-cart-vaciar:hover { background: #e4e4e7; color: #18181b; }
+
+        .btn-cart-comprar {
+            flex: 1;
+            text-align: center;
+            background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+            color: #fff;
+            padding: 10px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            transition: opacity 0.2s, transform 0.2s;
+            box-shadow: 0 2px 6px rgba(40,167,69,0.2);
+        }
+        .btn-cart-comprar:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(40,167,69,0.3);
+        }
+
+        /* ==========================================
+           VENTANA MODAL INTERACTIVA
+        ========================================== */
+        .custom-modal {
+            display: none;
+            position: fixed;
+            z-index: 200;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+            position: relative;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #a1a1aa;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .close-modal:hover { color: #FF3C2A; }
+        .modal-content h3 { margin-top: 0; color: #1c1917; font-size: 22px; margin-bottom: 15px; }
+        .modal-content p { color: #44403c; line-height: 1.6; font-size: 15px; }
+    </style>
+</head>
+<body>
+
+    <header class="header" style="min-height: auto; padding: 100px 0 140px 0;">
+        <div class="menu container">
+            <a href="index.html" class="logo" style="color: #1a1d24; font-weight: 700; text-decoration: none; font-size: 22px;">StudioHogar</a>
+            <input type="checkbox" id="menu">
+            <label for="menu">
+                <img src="images/menu.png" alt="menu">
+            </label>
+            <nav class="navbar">
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="servicios.html">Servicios</a></li>
+                    <li><a href="productos.html">Productos</a></li>
+                    <li><a href="#contacto">Contacto</a></li>
+                </ul>
+            </nav>
+            
+            <div>
+                <ul>
+                    <li class="submenu" style="position: relative; list-style: none;">
+                        <img src="images/car.svg" id="img-carrito" alt="Carrito" style="cursor: pointer; width: 30px; height: 30px;">
+                        <div id="carrito" style="position: absolute; right: 0; background: #fff; min-width: 340px; display: none; box-shadow: 0 10px 25px rgba(0,0,0,0.15); z-index: 100; border-radius: 8px; padding: 15px;">
+                            <table id="lista-carrito" style="width: 100%; border-collapse: collapse; margin-bottom: 10px;">
+                                <thead>
+                                    <tr style="border-bottom: 2px solid #f4f4f5;">
+                                        <th style="font-size: 12px; padding: 8px 5px; text-align: left; color:#71717a;">Imagen</th>
+                                        <th style="font-size: 12px; padding: 8px 5px; text-align: left; color:#71717a;">Nombre</th>
+                                        <th style="font-size: 12px; padding: 8px 5px; text-align: left; color:#71717a;">Precio</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                            
+                            <div id="contenedor-total" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 5px; border-top: 1px solid #f4f4f5; margin-bottom: 10px; font-weight: bold; color: #18181b; font-size: 14px;">
+                                <span>Total:</span>
+                                <span id="total-carrito">$0 MXN</span>
+                            </div>
+
+                            <div style="display: flex; gap: 10px; margin-top: 10px;">
+                                <a href="#" id="vaciar-carrito" class="btn-cart-vaciar">Vaciar</a>
+                                <a href="#" id="procesar-compra" class="btn-cart-comprar">Comprar ya</a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="header-content container">
+            <div class="header-txt">
+                <h1 style="color: #1a1d24; font-size: 48px; text-transform: uppercase; margin-bottom: 20px;">Nuestros Servicios</h1>
+                <p style="color: #5c6273; max-width: 600px; font-size: 16px; line-height: 1.6;">Brindamos soluciones integrales en diseño, fabricación y acondicionamiento para transformar tus espacios en lugares únicos, cómodos y funcionales.</p>
+            </div>
+        </div>
+    </header>
+
+    <section class="features-section">
+        <div class="container-custom">
+            <div class="features-grid">
+                <div class="feature-card reveal delay-1">
+                    <i class="bi bi-shield-heart"></i>
+                    <h3>Confianza</h3>
+                    <p>Sobre ella estructuramos todas nuestras actividades, buscando fortalecer el vínculo con cada cliente mediante un trabajo íntegro y transparente.</p>
+                </div>
+                <div class="feature-card reveal delay-2">
+                    <i class="bi bi-shield-check"></i>
+                    <h3>Credibilidad</h3>
+                    <p>Una cualidad que se conquista a través de la excelencia constante en la entrega de mobiliario y proyectos a la medida.</p>
+                </div>
+                <div class="feature-card reveal delay-3">
+                    <i class="bi bi-scales"></i>
+                    <h3>Ética</h3>
+                    <p>El pilar fundamental que guía nuestras acciones corporativas, cuidando los materiales, presupuestos y satisfacción total.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="services-section">
+        <div class="container-custom">
+            <div class="reveal">
+                <h2>¿Qué Ofrecemos?</h2>
+                <p>Atención especializada y servicios profesionales respaldados por expertos en mobiliario.</p>
+            </div>
+
+            <div class="services-grid">
+                <div class="service-box reveal delay-1">
+                    <div>
+                        <div class="service-header">
+                            <div class="service-icon"><i class="bi bi-layers"></i></div>
+                            <h3>Diseño de Interiores</h3>
+                        </div>
+                        <p>Nuestro equipo de diseñadores te ayuda a planificar la distribución ideal de tus espacios. Optimizamos cada rincón combinando texturas y paletas de colores.</p>
+                    </div>
+                    <button class="btn-4 open-info-modal" data-title="Diseño de Interiores Especializado" data-desc="Agenda una sesión de consultoría técnica. Desarrollamos maquetación 3D (renders), estudios ergonómicos espaciales, armonización lumínica y muestrarios textiles personalizados para que visualices tu espacio perfectamente antes de fabricar o instalar cualquier mueble.">Cotizar Proyecto</button>
+                </div>
+
+                <div class="service-box reveal delay-2">
+                    <div>
+                        <div class="service-header">
+                            <div class="service-icon"><i class="bi bi-truck"></i></div>
+                            <h3>Envío y Armado Premium</h3>
+                        </div>
+                        <p>Llevamos tus productos armados, calibrados y listos para usar directamente hasta la comodidad de tu sala con la máxima protección.</p>
+                    </div>
+                    <button class="btn-4 open-info-modal" data-title="Logística y Entrega Premium" data-desc="Olvídate de instructivos complejos. Nuestro personal de planta capacitado traslada tus muebles en camiones adaptados, realiza la descarga segura, ensamble milimétrico, nivelación en sitio y se encarga de retirar todos los plásticos o cartones de embalaje.">Saber más</button>
+                </div>
+
+                <div class="service-box reveal delay-3">
+                    <div>
+                        <div class="service-header">
+                            <div class="service-icon"><i class="bi bi-patch-check"></i></div>
+                            <h3>Garantía Extendida</h3>
+                        </div>
+                        <p>Tu tranquilidad es lo primero. Todos nuestros muebles cuentan con una cobertura robusta contra defectos de fabricación en estructuras.</p>
+                    </div>
+                    <button class="btn-4 open-info-modal" data-title="Términos de Cobertura Completa" data-desc="Ofrecemos un certificado integral de 5 años en fallas o fisuras de marcos estructurales de madera/acero, y una póliza extendida de 2 años en hundimiento anormal de espumas de alta densidad, costuras reforzadas y mecanismos mecánicos de herrajes europeos.">Ver Cobertura</button>
+                </div>
+
+                <div class="service-box reveal delay-1">
+                    <div>
+                        <div class="service-header">
+                            <div class="service-icon"><i class="bi bi-rulers"></i></div>
+                            <h3>Mobiliario a la Medida</h3>
+                        </div>
+                        <p>Si tienes un espacio con medidas especiales o un diseño en mente que no encuentras en nuestro catálogo, lo fabricamos para ti de forma personalizada.</p>
+                    </div>
+                    <button class="btn-4 open-info-modal" data-title="Proyectos de Carpintería Personalizada" data-desc="Si tienes muros irregulares o columnas desafiantes, fabricamos centros de entretenimiento, vestidores, libreros y comedores con las medidas exactas de tu plano, ocupando maderas finas sustentables estufadas y chapas naturales de alta gama.">Personalizar</button>
+                </div>
+
+                <div class="service-box reveal delay-2">
+                    <div>
+                        <div class="service-header">
+                            <div class="service-icon"><i class="bi bi-magic"></i></div>
+                            <h3>Mantenimiento y Limpieza</h3>
+                        </div>
+                        <p>Ofrecemos servicio postventa especializado en el cuidado de tus muebles. Desde tratamientos protectores contra manchas hasta restauración.</p>
+                    </div>
+                    <button class="btn-4 open-info-modal" data-title="Plan Postventa de Conservación" data-desc="Contamos con cuadrillas de mantenimiento a domicilio. Brindamos servicio profundo de lavado textil mediante inyección-succión, reaplicación selladora de teflón repelente a líquidos accidentales y nutrición profunda para maderas expuestas.">Solicitar Servicio</button>
+                </div>
+
+                <div class="service-box reveal delay-3">
+                    <div>
+                        <div class="service-header">
+                            <div class="service-icon"><i class="bi bi-building"></i></div>
+                            <h3>Proyectos Comerciales</h3>
+                        </div>
+                        <p>Equipamos oficinas, hoteles, restaurantes y salas de espera bajo estrictos estándares de durabilidad de alto tráfico y presupuestos estables.</p>
+                    </div>
+                    <button class="btn-4 open-info-modal" data-title="Línea Contract para Empresas" data-desc="Desarrollamos proyectos de amueblamiento integral para corporativos, hoteles boutique y giros restauranteros. Suministramos piezas bajo normas internacionales de resistencia al desgaste y telas ignífugas con atractivos esquemas de descuento por volumen.">Asesoría Corporativa</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="infoModal" class="custom-modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3 id="modalTitle">Título Informativo</h3>
+            <p id="modalDescription">Detalle e información real aquí...</p>
+        </div>
+    </div>
+
+    <section class="contact-block" id="contacto">
+        <div class="container-custom">
+            <div class="contact-content reveal">
+                <h2>¡Conéctate con Nosotros!</h2>
+                <p>Puedes contactarnos directamente o seguir nuestro día a día a través de nuestras redes sociales oficiales. ¡Estamos listos para atenderte!</p>
+                
+                <div class="social-grid">
+                    <a href="https://facebook.com/tu-pagina" target="_blank" class="social-card">
+                        <i class="bi bi-facebook"></i>
+                        <span>Facebook</span>
+                    </a>
+                    <a href="https://instagram.com/tu-usuario" target="_blank" class="social-card">
+                        <i class="bi bi-instagram"></i>
+                        <span>Instagram</span>
+                    </a>
+                    <a href="https://wa.me/123456789" target="_blank" class="social-card">
+                        <i class="bi bi-whatsapp"></i>
+                        <span>WhatsApp</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+   <footer class="main-footer">
+    <div class="container-custom"> 
+        
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h3>Sobre Nosotros</h3>
+                <p>Creamos espacios únicos con muebles que combinan diseño de vanguardia, confort excepcional y la más alta durabilidad. Tu hogar merece lo mejor.</p>
+            </div>
+            <div class="footer-col">
+                <h3>Enlaces Rápidos</h3>
+                <ul class="footer-links">
+                   <li><a href="index.html">Inicio</a></li>
+                    <li><a href="servicios.html">Servicios</a></li>
+                    <li><a href="productos.html">Productos</a></li>
+                    <li><a href="#contacto">Contacto</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Métodos de Pago</h3>
+                <p>Aceptamos múltiples plataformas de pago 100% seguras y encriptadas:</p>
+                <div class="payment-methods">
+                    <div class="payment-badge" title="Visa / Mastercard"><i class="bi bi-credit-card-2-front"></i></div>
+                    <div class="payment-badge" title="PayPal"><i class="bi bi-paypal"></i></div>
+                    <div class="payment-badge" title="Apple Pay"><i class="bi bi-apple"></i></div>
+                    <div class="payment-badge" style="font-size: 11px; font-weight: 700; letter-spacing: 0.5px;">AMEX</div>
+                    <div class="payment-badge" style="font-size: 11px; font-weight: 700; letter-spacing: 0.5px;">SPEI</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <div>&copy; 2026 Servicios de Interiorismo y Decoración Profesional.</div>
+            <div>Diseño Web Adaptable y Seguro.</div>
+        </div>
+
+    </div> </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- MANEJO DEL MENU RESPONSIVO ---
+            const menuCheckbox = document.getElementById('menu');
+            document.querySelectorAll('.navbar a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (menuCheckbox) menuCheckbox.checked = false;
+                });
+            });
+
+            // --- ANIMACION DE REVEAL EN SCROLL ---
+            const revealElements = document.querySelectorAll('.reveal');
+            const options = {
+                root: null,
+                threshold: 0.10, 
+                rootMargin: "0px 0px -40px 0px"
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target); 
+                    }
+                });
+            }, options);
+
+            revealElements.forEach(element => {
+                observer.observe(element);
+            });
+
+
+            // --- LÓGICA DE VENTANA MODAL INTERACTIVA ---
+            const modal = document.getElementById('infoModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalDesc = document.getElementById('modalDescription');
+            const btnCloseModal = document.querySelector('.close-modal');
+
+            document.addEventListener('click', (e) => {
+                if(e.target.classList.contains('open-info-modal')) {
+                    e.preventDefault();
+                    const title = e.target.getAttribute('data-title');
+                    const desc = e.target.getAttribute('data-desc');
+                    
+                    modalTitle.textContent = title;
+                    modalDesc.textContent = desc;
+                    modal.style.display = 'flex';
+                }
+            });
+
+            btnCloseModal.addEventListener('click', () => {
+                modal.style.display = 'none';
+            });
+
+            window.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+
+
+            // --- SISTEMA DEL CARRITO DE COMPRAS ---
+            const carritoMenu = document.getElementById('carrito');
+            const imgCarrito = document.getElementById('img-carrito');
+            const listaCarrito = document.querySelector('#lista-carrito tbody');
+            const btnVaciarCarrito = document.getElementById('vaciar-carrito');
+            const btnProcesarCompra = document.getElementById('procesar-compra');
+            const totalCarritoText = document.getElementById('total-carrito');
+
+            function actualizarTotal() {
+                let total = 0;
+                const filas = listaCarrito.querySelectorAll('tr');
+                filas.forEach(fila => {
+                    const precioCelda = fila.children[2].textContent;
+                    const numero = parseFloat(precioCelda.replace(/[^0-9.-]+/g,"").replace(",",""));
+                    if(!isNaN(numero)) total += numero;
+                });
+                totalCarritoText.textContent = `$${total.toLocaleString('es-MX')} MXN`;
+            }
+
+            imgCarrito.addEventListener('click', (e) => {
+                e.stopPropagation();
+                carritoMenu.style.display = (carritoMenu.style.display === 'block') ? 'none' : 'block';
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!carritoMenu.contains(e.target) && e.target !== imgCarrito) {
+                    carritoMenu.style.display = 'none';
+                }
+            });
+
+            carritoMenu.addEventListener('click', (e) => {
+                if(e.target.classList.contains('borrar-producto')) {
+                    e.preventDefault();
+                    e.stopPropagation(); 
+                    e.target.closest('tr').remove();
+                    actualizarTotal();
+                }
+            });
+
+            btnVaciarCarrito.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation(); 
+                listaCarrito.innerHTML = '';
+                actualizarTotal();
+            });
+
+            btnProcesarCompra.addEventListener('click', (e) => {
+                e.preventDefault();
+                if(listaCarrito.children.length === 0) {
+                    alert('El carrito está vacío. Agrega productos desde el catálogo de la página principal.');
+                } else {
+                    alert(`¡Pedido listo! Procesando orden segura por un total de ${totalCarritoText.textContent}.`);
+                    listaCarrito.innerHTML = '';
+                    actualizarTotal();
+                    carritoMenu.style.display = 'none';
+                }
+            });
+        });
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <title>Studio Hogar - Muebles y Decoración</title>
+    
+    <style>
+
+        /* ==========================================
+           NAVBAR LINKS (EFECTO HOVER)
+        ========================================== */
+        .navbar ul li a {
+            color: #1a1d24; /* Color base */
+            text-decoration: none;
+            transition: color 0.3s ease; /* Aquí se crea la transición suave */
+        }
+
+        .navbar ul li a:hover {
+            color: #FF3C2A; /* El color que tomará al pasar el mouse (puedes cambiarlo) */
+        }
+        /* ==========================================
+           MODAL INTERACTIVA (NUEVA)
+        ========================================== */
+        .custom-modal {
+            display: none;
+            position: fixed;
+            z-index: 200;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+            position: relative;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #a1a1aa;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .close-modal:hover { color: #FF3C2A; }
+        .modal-content h3 { margin-top: 0; color: #1c1917; font-size: 22px; margin-bottom: 15px; }
+        .modal-content p { color: #44403c; line-height: 1.6; font-size: 15px; }
+
+        /* ==========================================
+           FOOTER
+        ========================================== */
+        .main-footer {
+            background-color: #1a1d24; 
+            color: #94a3b8;
+            padding: 70px 0 30px 0;
+            width: 100%;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            border-bottom: 1px solid #2e3542;
+            padding-bottom: 40px;
+        }
+        .footer-col h3 {
+            color: #ffffff;
+            font-size: 16px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .footer-col p { 
+            font-size: 14px; 
+            line-height: 1.6; 
+        }
+        .footer-links { 
+            list-style: none; 
+            padding: 0; 
+            margin: 0; 
+        }
+        .footer-links li { 
+            margin-bottom: 12px; 
+        }
+        .footer-links a { 
+            color: #94a3b8; 
+            text-decoration: none; 
+            font-size: 14px; 
+            transition: color 0.2s; 
+        }
+        .footer-links a:hover { 
+            color: #FF3C2A; 
+        }
+        
+        .payment-methods { 
+            display: flex; 
+            gap: 10px; 
+            flex-wrap: wrap; 
+            margin-top: 15px; 
+        }
+        .payment-badge {
+            background-color: #242933;
+            color: #ffffff;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #2e3542;
+        }
+
+        .footer-bottom {
+            padding-top: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            font-size: 13px;
+            color: #64748b;
+        }
+        /* Métodos de Pago */
+        .payment-methods { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 15px; }
+        .payment-badge {
+            background-color: #27272a;
+            color: #ffffff;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #3f3f46;
+            transition: all 0.2s ease;
+        }
+        .payment-badge:hover {
+            background-color: #3f3f46;
+            border-color: #52525b;
+            transform: translateY(-2px);
+        }
+        .payment-badge i.bi-credit-card-2-front:hover { color: #0070ba; }
+        .payment-badge i.bi-paypal:hover { color: #003087; }
+        .payment-badge i.bi-apple:hover { color: #ffffff; }
+
+
+        /* ==========================================
+           BOTONES DEL CARRITO DE COMPRAS
+        ========================================== */
+        .btn-cart-vaciar {
+            flex: 1;
+            text-align: center;
+            background: #f4f4f5;
+            color: #52525b;
+            padding: 10px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+        .btn-cart-vaciar:hover { background: #e4e4e7; color: #18181b; }
+
+        .btn-cart-comprar {
+            flex: 1;
+            text-align: center;
+            background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+            color: #fff;
+            padding: 10px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            transition: opacity 0.2s, transform 0.2s;
+            box-shadow: 0 2px 6px rgba(40,167,69,0.2);
+        }
+        .btn-cart-comprar:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(40,167,69,0.3);
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body>
+    <header class="header" id="inicio">
+        <div class="menu container">
+            <a href="#inicio" class="logo" style="font-weight: 700; text-decoration: none; font-size: 22px; color: #18181b;">StudioHogar</a>
+            <input type="checkbox" id="menu">
+            <label for="menu">
+                <img src="images/menu.png" alt="menu">
+            </label>
+           <nav class="navbar">
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="servicios.html">Servicios</a></li>
+                    <li><a href="productos.html">Productos</a></li>
+                   <li><a href="servicios.html#contacto">Contacto</a></li>
+                </ul>
+            </nav>
+            
+            <div>
+                <ul>
+                    <li class="submenu" style="position: relative; list-style: none;">
+                        <img src="images/car.svg" id="img-carrito" alt="Carrito" style="cursor: pointer; width: 30px; height: 30px;">
+                        <div id="carrito" style="position: absolute; right: 0; background: #fff; min-width: 340px; display: none; box-shadow: 0 10px 25px rgba(0,0,0,0.15); z-index: 100; border-radius: 8px; padding: 15px;">
+                            <table id="lista-carrito" style="width: 100%; border-collapse: collapse; margin-bottom: 10px;">
+                                <thead>
+                                    <tr style="border-bottom: 2px solid #f4f4f5;">
+                                        <th style="font-size: 12px; padding: 8px 5px; text-align: left; color:#71717a;">Imagen</th>
+                                        <th style="font-size: 12px; padding: 8px 5px; text-align: left; color:#71717a;">Nombre</th>
+                                        <th style="font-size: 12px; padding: 8px 5px; text-align: left; color:#71717a;">Precio</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                            
+                            <div id="contenedor-total" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 5px; border-top: 1px solid #f4f4f5; margin-bottom: 10px; font-weight: bold; color: #18181b; font-size: 14px;">
+                                <span>Total:</span>
+                                <span id="total-carrito">$0 MXN</span>
+                            </div>
+
+                            <div style="display: flex; gap: 10px; margin-top: 10px;">
+                                <a href="#" id="vaciar-carrito" class="btn-cart-vaciar">Vaciar</a>
+                                <a href="#" id="procesar-compra" class="btn-cart-comprar">Comprar ya</a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="header-content container">
+            <div class="header-txt">
+                <h1>Ofertas Especiales</h1>
+                <p>Estrena los mejores diseños de temporada con acabados premium y confort garantizado para toda la familia.</p>
+                <a href="#" class="btn-1 open-info-modal" data-title="Nuestra Colección" data-desc="Cada una de nuestras piezas ha sido rigurosamente seleccionada por expertos diseñadores de interiores. Utilizamos maderas sustentables tratadas, textiles antimanchas de última tecnología y espumas de alta densidad para asegurar confort durante años.">Saber más</a>
+            </div>
+            <div class="header-img">
+                <img src="images/right.png" alt="">
+            </div>
+        </div>
+    </header>
+
+    <section class="oferts container" id="sofas">
+        <h2>Sofás y Sillas de Autor</h2>
+        <p>Líneas ergonómicas hechas con materiales premium de alta durabilidad.</p>
+        
+        <div class="oferts-content">
+            <div class="ofert-1">
+                <img src="images/pr1.png" alt="">
+                <div class="product-txt">
+                    <h3>Sofá Cama Nórdico Bergen</h3>
+                    <p>Lino gris texturizado</p>
+                    <p class="precio">$8,499 MXN</p>
+                    <a href="#" class="agregar-carrito btn-3" data-id="1">Agregar</a>
+                </div>
+            </div>
+            
+            <div class="ofert-1">
+                <img src="images/pr2.png" alt="">
+                <div class="product-txt">
+                    <h3>Sillón Velvet Turquesa</h3>
+                    <p>Patas de madera sólida</p>
+                    <p class="precio">$3,200 MXN</p>
+                    <a href="#" class="agregar-carrito btn-3" data-id="2">Agregar</a>
+                </div>
+            </div>
+
+            <div class="logan-1">
+                <h3>Sillas de Comedor</h3>
+                <p>Colección Minimalista</p>
+                <a href="#" class="btn-2 open-info-modal" data-title="Línea de Sillas Comedor" data-desc="Nuestras sillas ergonómicas combinan la calidez de la madera de roble con estructuras de acero reforzado ocultas. Ideales para largas sobremesas en el hogar o uso continuo en restaurantes de alta gama.">Detalles</a>
+            </div>
+        </div>
+
+        <div class="oferts-content">
+            <div class="logan-1">
+                <h3>Sillas de Oficina</h3>
+                <p>Ergonomía Activa</p>
+                <a href="#" class="btn-2 open-info-modal" data-title="Línea de Sillas de Oficina" data-desc="Diseño inteligente que cuida la postura lumbar. Cuenta con soporte de malla transpirable, pistones mecánicos de clase 4 y descansabrazos con ajuste de altura bidimensional.">Detalles</a>
+            </div>
+
+            <div class="ofert-1">
+                <img src="images/pr3.png" alt="">
+                <div class="product-txt">
+                    <h3>Silla Eames Confort</h3>
+                    <p>Acabado mate premium</p>
+                    <p class="precio">$1,150 MXN</p>
+                    <a href="#" class="agregar-carrito btn-3" data-id="3">Agregar</a>
+                </div>
+            </div>
+            
+            <div class="ofert-1">
+                <img src="images/pr4.png" alt="">
+                <div class="product-txt">
+                    <h3>Silla Minimalist Black</h3>
+                    <p>Estructura de acero</p>
+                    <p class="precio">$1,490 MXN</p>
+                    <a href="#" class="agregar-carrito btn-3" data-id="4">Agregar</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="promotion">
+        <div class="promotion-content container">
+            <div class="promotion-txt">
+                <h2>Las Mejores Promociones</h2>
+                <p>Aprovecha nuestros beneficios de temporada: envíos gratis a toda la República, garantía extendida de 2 años contra cualquier defecto de fabricación y opciones de financiamiento a meses sin intereses con tarjetas participantes.</p>
+                <a href="#" class="btn-1 open-info-modal" data-title="Promociones y Envíos" data-desc="El envío estándar gratuito cubre las principales zonas metropolitanas. Los muebles se entregan semiarmados con manuales intuitivos y herramientas incluidas. Si lo requieres, contamos con servicio especializado de armado en sitio.">Condiciones</a>
+            </div>
+            <div class="promotion-img">
+                <img src="images/r1.png" alt="">
+            </div>
+        </div>
+    </section>
+
+    <main class="product container" id="productos">
+        <h2>Catálogo de Complementos</h2>
+        <p>Los detalles perfectos para dar vida y balance a cada rincón de tu hogar.</p>    
+        <div class="product-content">
+            <div class="ofert-1">
+                <img src="images/1.png" alt="">
+                <div class="product-txt">
+                    <h3>Mesa de Centro Industrial</h3>
+                    <p>Madera de parota y hierro</p>
+                    <p class="precio">$3,899 MXN</p>
+                    <a href="#" class="agregar-carrito btn-3" data-id="5">Agregar</a>
+                </div>
+            </div>
+
+            <div class="ofert-1">
+                <img src="images/2.png" alt="">
+                <div class="product-txt">
+                    <h3>Lámpara de Pie Trípode</h3>
+                    <p>Pantala de tela difusora</p>
+                    <p class="precio">$1,650 MXN</p>
+                    <a href="#" class="agregar-carrito btn-3" data-id="6">Agregar</a>
+                </div>
+            </div>
+
+            <div class="ofert-1">
+                <img src="images/3.png" alt="">
+                <div class="product-txt">
+                    <h3>Espejo de Pared Sunset</h3>
+                    <p>Marco metálico dorado</p>
+                    <p class="precio">$2,100 MXN</p>
+                    <a href="#" class="agregar-carrito btn-3" data-id="7">Agregar</a>
+                </div>
+            </div>
+
+            <div class="ofert-1">
+                <img src="images/4.png" alt="">
+                <div class="product-txt">
+                    <h3>Tapete Geométrico 2x3m</h3>
+                    <p>Tejido suave de fácil limpieza</p>
+                    <p class="precio">$4,299 MXN</p>
+                    <a href="#" class="agregar-carrito btn-3" data-id="8">Agregar</a>
+                </div>
+            </div>
+
+            <div class="ofert-1">
+                <img src="images/5.png" alt="">
+                <div class="product-txt">
+                    <h3>Macetero Cúbico Cemento</h3>
+                    <p>Base de madera fina</p>
+                    <p class="precio">$780 MXN</p>
+                    <a href="#" class="agregar-carrito btn-3" data-id="9">Agregar</a>
+                </div>
+            </div>
+
+            <div class="ofert-1">
+                <img src="images/6.png" alt="">
+                <div class="product-txt">
+                    <h3>Cojín Decorativo Boho</h3>
+                    <p>Algodón orgánico tejido</p>
+                    <p class="precio">$349 MXN</p>
+                    <a href="#" class="agregar-carrito btn-3" data-id="10">Agregar</a>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <section class="blog-container" id="blog">
+        <h2>Espacio de Tendencias</h2>
+        <p>Ideas e inspiración directo de la mano de nuestros expertos en interiorismo.</p>
+
+        <div class="blog-content">
+            <div class="blog-1">
+                <img src="images/b1.jpg" alt="">
+                <div class="blog-txt">
+                    <p style="font-weight: bold; margin-bottom: 5px;">Cómo elegir el sofá ideal según tus espacios</p>
+                    <p>Aprende las claves métricas básicas para medir tu sala de estar de forma correcta, evitando obstrucciones de luz y maximizando las áreas de tránsito común...</p>
+                    <a href="#" class="btn-4 open-info-modal" data-title="Cómo elegir tu Sofá Ideal" data-desc="Antes de comprar, mide el ancho de tus puertas y elevadores. Un sofá perfecto debe dejar al menos 45 cm libres respecto a la mesa de centro y no bloquear pasillos. Para salas pequeñas, los diseños con patas altas estilizan el ambiente permitiendo el paso de luz natural por debajo.">Leer más</a>        
+                </div>
+            </div>
+
+             <div class="blog-1">
+                <img src="images/b2.jpg" alt="">
+                <div class="blog-txt">
+                    <p style="font-weight: bold; margin-bottom: 5px;">El arte de combinar texturas en salas minimalistas</p>
+                    <p>El minimalismo no tiene por qué ser frío. Descubre el secreto de mezclar lino, piel y sutiles toques de metal dorado para concebir espacios totalmente acogedores...</p>
+                    <a href="#" class="btn-4 open-info-modal" data-title="Combinar Texturas" data-desc="El secreto para que un espacio monocromático funcione es la variedad de superficies. Contrapón la frialdad de una mesa de centro de concreto con la calidez de un cojín de lana bouclé y cortinas de lino ligero. Esto genera capas visuales profundas sin romper la armonía cromática.">Leer más</a>        
+                </div>
+            </div>
+
+             <div class="blog-1">
+                <img src="images/b3.jpg" alt="">
+                <div class="blog-txt">
+                    <p style="font-weight: bold; margin-bottom: 5px;">Mantenimiento y cuidado de textiles de alta gama</p>
+                    <p>Mantén tus sillones como el primer día. Te enseñamos los métodos correctos de limpieza diaria y qué hacer inmediatamente ante derrames accidentales de líquidos...</p>
+                    <a href="#" class="btn-4 open-info-modal" data-title="Cuidado de Muebles" data-desc="Ante un derrame accidentado, actúa con rapidez presionando con un paño seco absorbente; jamás talles la mancha. Para polvo común, aspira una vez por semana usando el cepillo suave. Evita la exposición directa y prolongada al sol directo para proteger los tonos originales del hilo.">Leer más</a>        
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="infoModal" class="custom-modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3 id="modalTitle">Título Informativo</h3>
+            <p id="modalDescription">Detalle e información real aquí...</p>
+        </div>
+    </div>
+
+    <footer class="main-footer">
+        <div class="container reveal">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>Sobre Nosotros</h3>
+                    <p>Creamos espacios únicos con muebles que combinan diseño de vanguardia, confort excepcional y la más alta durabilidad. Tu hogar merece lo mejor.</p>
+                </div>
+                <div class="footer-col">
+                    <h3>Enlaces Rápidos</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Inicio</a></li>
+                    <li><a href="servicios.html">Servicios</a></li>
+                    <li><a href="productos.html">Productos</a></li>
+                    <li><a href="servicios.html#contacto">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Métodos de Pago</h3>
+                    <p>Aceptamos múltiples plataformas de pago 100% seguras y encriptadas:</p>
+                    <div class="payment-methods">
+                        <div class="payment-badge" title="Visa / Mastercard"><i class="bi bi-credit-card-2-front"></i></div>
+                        <div class="payment-badge" title="PayPal"><i class="bi bi-paypal"></i></div>
+                        <div class="payment-badge" title="Apple Pay"><i class="bi bi-apple"></i></div>
+                        <div class="payment-badge" style="font-size: 11px; font-weight: 700; letter-spacing: 0.5px;">AMEX</div>
+                        <div class="payment-badge" style="font-size: 11px; font-weight: 700; letter-spacing: 0.5px;">SPEI</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div>&copy; 2026 Studio Hogar S.A. Todos los derechos reservados.</div>
+                <div>Diseño Web Adaptable, Seguro e Interactivo.</div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const carritoMenu = document.getElementById('carrito');
+            const imgCarrito = document.getElementById('img-carrito');
+            const listaCarrito = document.querySelector('#lista-carrito tbody');
+            const btnVaciarCarrito = document.getElementById('vaciar-carrito');
+            const btnProcesarCompra = document.getElementById('procesar-compra');
+            const totalCarritoText = document.getElementById('total-carrito');
+
+            // --- LÓGICA DEL CARRITO CON TOTALES REALES ---
+
+            // Función para calcular y renderizar el precio total del carrito
+            function actualizarTotal() {
+                let total = 0;
+                const filas = listaCarrito.querySelectorAll('tr');
+                filas.forEach(fila => {
+                    const precioCelda = fila.children[2].textContent;
+                    // Remueve caracteres de moneda para parsear el número limpio
+                    const numero = parseFloat(precioCelda.replace(/[^0-9.-]+/g,"").replace(",",""));
+                    if(!isNaN(numero)) {
+                        total += numero;
+                    }
+                });
+                totalCarritoText.textContent = `$${total.toLocaleString('es-MX')} MXN`;
+            }
+
+            // Abrir/cerrar menú del carrito
+            imgCarrito.addEventListener('click', (e) => {
+                e.stopPropagation();
+                carritoMenu.style.display = (carritoMenu.style.display === 'block') ? 'none' : 'block';
+            });
+
+            // Cerrar el carrito al hacer click fuera
+            document.addEventListener('click', (e) => {
+                if (!carritoMenu.contains(e.target) && e.target !== imgCarrito) {
+                    carritoMenu.style.display = 'none';
+                }
+            });
+
+            // Agregar productos al carrito
+            document.addEventListener('click', (e) => {
+                if(e.target.classList.contains('agregar-carrito')) {
+                    e.preventDefault();
+                    
+                    const cardProducto = e.target.closest('.ofert-1');
+                    if(cardProducto) {
+                        const infoProducto = {
+                            imagen: cardProducto.querySelector('img').src,
+                            titulo: cardProducto.querySelector('h3').textContent,
+                            precio: cardProducto.querySelector('.precio').textContent,
+                            id: e.target.getAttribute('data-id')
+                        }
+                        insertarCarrito(infoProducto);
+                    }
+                }
+            });
+
+            // Insertar fila en la estructura HTML del carrito
+            function insertarCarrito(prod) {
+                const row = document.createElement('tr');
+                row.style.borderBottom = '1px solid #f4f4f5';
+                row.innerHTML = `
+                    <td style="padding: 8px 5px;"><img src="${prod.imagen}" width="45" style="border-radius:4px; display:block;"></td>
+                    <td style="font-size: 13px; padding: 8px 5px; color:#18181b; font-weight:500;">${prod.titulo}</td>
+                    <td style="font-size: 13px; padding: 8px 5px; font-weight:bold; color:#18181b;">${prod.precio}</td>
+                    <td style="padding: 8px 5px; text-align:center;"><a href="#" class="borrar-producto" data-id="${prod.id}" style="color: #a1a1aa; text-decoration: none; font-weight: bold; font-size:18px; transition:color 0.2s;">&times;</a></td>
+                `;
+                
+                row.querySelector('.borrar-producto').addEventListener('mouseover', (e) => e.target.style.color = '#FF3C2A');
+                row.querySelector('.borrar-producto').addEventListener('mouseout', (e) => e.target.style.color = '#a1a1aa');
+                
+                listaCarrito.appendChild(row);
+                actualizarTotal(); // <--- Recalcula el monto total
+            }
+
+            // Eliminar un único producto
+            carritoMenu.addEventListener('click', (e) => {
+                if(e.target.classList.contains('borrar-producto')) {
+                    e.preventDefault();
+                    e.stopPropagation(); 
+                    e.target.closest('tr').remove();
+                    actualizarTotal(); // <--- Recalcula el monto total
+                }
+            });
+
+            // Vaciar completo
+            btnVaciarCarrito.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation(); 
+                listaCarrito.innerHTML = '';
+                actualizarTotal(); // <--- Vuelve a $0 MXN
+            });
+
+            // Botón de pago funcional
+            btnProcesarCompra.addEventListener('click', (e) => {
+                e.preventDefault();
+                if(listaCarrito.children.length === 0) {
+                    alert('El carrito está vacío. ¡Agrega productos del catálogo primero!');
+                } else {
+                    alert(`¡Pedido Confirmado!\nProcederemos a procesar tu orden segura por un monto de ${totalCarritoText.textContent}. ¡Gracias por tu compra!`);
+                    listaCarrito.innerHTML = '';
+                    actualizarTotal();
+                    carritoMenu.style.display = 'none';
+                }
+            });
+
+
+            // --- LÓGICA DE VENTANA MODAL INTERACTIVA ---
+            const modal = document.getElementById('infoModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalDesc = document.getElementById('modalDescription');
+            const btnCloseModal = document.querySelector('.close-modal');
+
+            // Escuchar clics en botones configurados con data-attributes
+            document.addEventListener('click', (e) => {
+                if(e.target.classList.contains('open-info-modal')) {
+                    e.preventDefault();
+                    const title = e.target.getAttribute('data-title');
+                    const desc = e.target.getAttribute('data-desc');
+                    
+                    modalTitle.textContent = title;
+                    modalDesc.textContent = desc;
+                    modal.style.display = 'flex';
+                }
+            });
+
+            // Cerrar modal al dar click en la 'X'
+            btnCloseModal.addEventListener('click', () => {
+                modal.style.display = 'none';
+            });
+
+            // Cerrar modal si se hace clic fuera del recuadro blanco
+            window.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>
